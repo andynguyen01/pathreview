@@ -47,11 +47,11 @@ The issue will be complete when:
 
 **Reproduction summary:**
 
-I logged into PathReview and opened a completed review. I clicked the existing Share button, which copied the normal review URL. When I opened that copied URL in an Incognito window, I could not view the review without logging in. This confirms that the current Share button only copies a private authenticated route and does not generate the public, read-only link with a 30-day expiration required by Issue #101.
+I logged into PathReview and opened a completed review. I clicked the existing Share button, which copied the normal authenticated review URL. When I opened the copied URL in an Incognito window, I could not view the review without logging in. This confirms that the current Share button does not generate the public, read-only link with a 30-day expiration required by Issue #101.
 
 **PLAN.md link:** [add after PLAN.md is committed]
 
-**Walkthrough video (recommended):** Not recorded yet
+**Walkthrough video (recommended):** https://www.loom.com/share/fe7c7d3c93d944f68e59dac2c3900303
 
 **Blockers or open questions:**
 
