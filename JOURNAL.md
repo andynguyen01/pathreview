@@ -43,7 +43,7 @@ The issue will be complete when:
 
 ## Week 8 — Reproduction & solution planning
 
-**Reproduction commit link:** [add the GitHub commit link after pushing]
+**Reproduction commit link:** https://github.com/andynguyen01/pathreview/commit/dc5441e27a14c4551a215a07eb14c38889e6c310
 
 **Reproduction summary:**
 
