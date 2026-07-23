@@ -40,3 +40,20 @@ The issue will be complete when:
 **Cohort ledger:** [x] Issue added to cohort ledger
 
 **Issue claim:** [x] Commented on Issue #101 to claim the issue
+
+## Week 8 — Reproduction & solution planning
+
+**Reproduction commit link:** [add the GitHub commit link after pushing]
+
+**Reproduction summary:**
+
+I logged into PathReview and opened a completed review. I clicked the existing Share button, which copied the normal review URL. When I opened that copied URL in an Incognito window, I could not view the review without logging in. This confirms that the current Share button only copies a private authenticated route and does not generate the public, read-only link with a 30-day expiration required by Issue #101.
+
+**PLAN.md link:** [add after PLAN.md is committed]
+
+**Walkthrough video (recommended):** Not recorded yet
+
+**Blockers or open questions:**
+
+I still need to determine where the share token and expiration date should be stored, what public frontend route should display the shared review, and which existing backend and frontend test patterns should be followed.
+
