@@ -60,50 +60,44 @@ The following files and modules are involved:
 
 ### Plan
 
-1. Inspect the review model, frontend router, backend review service, schemas, and existing tests.
+1. Inspect the existing review data flow and project conventions.
 
-   * Determine how review ownership and completion status are represented.
-   * Identify the project’s existing patterns for public routes, token generation, timestamps, and API responses.
+   * Read `core/models/review.py`, `core/services/review_service.py`, `api/schemas/review.py`, the frontend router, Alembic migrations, and related tests.
+   * Confirm how ownership, completion status, authentication, timestamps, and API responses are currently handled.
+   * Determine whether `frontend/src/services/shareService.ts` should be created or whether sharing should remain in `api.ts`.
 
-2. Add backend support for share links.
+2. Design and implement backend share-link persistence and creation.
 
-   * Add fields or a separate persistence structure for the share token and expiration timestamp.
-   * Create an authenticated endpoint that verifies review ownership and completion status before generating a link.
-   * Generate a unique, hard-to-guess token.
-   * Set the expiration time to 30 days after generation.
-   * Return the token or public URL information to the frontend.
+   * Choose between adding share fields to the existing review model or creating a separate share-link model based on current repository patterns.
+   * Add the required migration if persistent fields are introduced.
+   * Add an authenticated endpoint that verifies ownership and confirms the review status is `complete`.
+   * Generate a unique, hard-to-guess token and store an expiration time 30 days after creation.
+   * Decide whether an existing active link should be reused or replaced.
 
-3. Add a public read-only review endpoint.
+3. Implement public read-only review access.
 
-   * Accept the share token without requiring authentication.
-   * Find the associated review.
-   * Reject invalid, expired, incomplete, failed, or unavailable reviews.
-   * Return only the fields required to display the review summary.
+   * Add a public endpoint that accepts a share token without using `get_current_user`.
+   * Validate that the token exists, has not expired, and belongs to a completed review.
+   * Return a limited public response containing only the fields required to display the review summary.
+   * Return appropriate errors for invalid, expired, deleted, failed, or incomplete reviews.
 
-4. Update the frontend sharing flow.
+4. Update the frontend sharing and public-view flow.
 
    * Replace the current `window.location.href` behavior in `ReviewPage.tsx`.
-   * Call the share-link endpoint.
-   * Build and copy the public URL.
-   * Show clear success or error feedback.
-   * Disable the button while the request is running.
+   * Call the share-link endpoint and copy the generated public URL.
+   * Add loading, success, clipboard-failure, and API-error feedback.
+   * Add an unauthenticated public route and read-only page that loads a review using the share token.
+   * Handle invalid and expired links with a clear error state.
 
-5. Add a public review page and route.
+5. Add tests and run project checks.
 
-   * Add a route that does not require authentication.
-   * Fetch the review using the public share token.
-   * Display the review in read-only form.
-   * Handle expired, invalid, and unavailable links gracefully.
-
-6. Add or update tests.
-
-   * Test successful link generation by the review owner.
-   * Test rejection when a user tries to share another user’s review.
-   * Test rejection for failed, pending, or incomplete reviews.
+   * Test link creation by the review owner.
+   * Test rejection for another user’s review and for failed, pending, or incomplete reviews.
    * Test public access without authentication.
    * Test invalid and expired tokens.
-   * Test the frontend service and Share button behavior.
-   * Run `make check` and `make test-unit`.
+   * Test that public responses do not expose private fields.
+   * Test the frontend API method and Share button behavior.
+   * Run `make check` and `make test-unit` before implementation is submitted.
 
 ### Inputs & outputs
 

@@ -57,3 +57,60 @@ I logged into PathReview and opened a completed review. I clicked the existing S
 
 I still need to determine where the share token and expiration date should be stored, what public frontend route should display the shared review, and which existing backend and frontend test patterns should be followed.
 
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**  
+Implemented the main public review sharing flow for Issue #101. I added share token and expiration fields to the Review model and created migration `003`. I added backend service logic to generate secure share tokens that expire after 30 days and a public endpoint that allows shared reviews to be viewed without login.
+
+On the frontend, I updated the Share button so it generates a public link instead of copying the authenticated review URL. I also added a public read-only shared review page.
+
+**Next steps:**  
+Add automated tests, run lint and unit checks, review the final diff, and prepare the pull request.
+
+**Blockers:**  
+I encountered a Pydantic validation error when the public endpoint tried to convert the SQLAlchemy Review model into `PublicReviewResponse`. I fixed it by adding `model_config = {"from_attributes": True}` to the public response schema.
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:**  
+[add PR link after opening the PR]
+
+**Branch:**  
+`feat/101-copy-review-link`
+
+**What you built:**  
+Implemented public review sharing for Issue #101. Users can generate a secure shareable URL for a completed review. The shared URL can be opened without authentication and displays a read-only version of the review. Share tokens expire after 30 days. Invalid or expired tokens cannot access the review.
+
+I manually verified the feature by generating a link while logged in and opening it in an Incognito window without being logged in. I also changed the token in the URL and confirmed that an invalid token shows the shared review unavailable page.
+
+**Tests added or updated:**  
+Added automated tests covering:
+- successful share-link creation
+- 30-day expiration time
+- rejection of incomplete reviews
+- valid public token lookup
+- expired token rejection
+- invalid token rejection
+
+`tests/unit/test_review_service.py` passes with:
+
+`24 passed`
+
+Ruff also passes for the updated test file:
+
+`.venv/Scripts/python.exe -m ruff check tests/unit/test_review_service.py`
+
+**Self-review confirmation:**
+- [ ] `make check` passes
+- [ ] `make test-unit` passes
+
+`make check` currently reports existing repository-wide lint errors in unrelated files.
+
+`make test-unit` completed with 393 passed and 40 failed. The failing tests are in unrelated areas such as bias detection, PII scrubbing, parsers, security, skill extraction, and technology detection. None of the failing tests are in `test_review_service.py` or the Issue #101 share-link functionality.
+
+**Draft PR feedback received from:**  
+[add person/name after feedback]
