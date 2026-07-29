@@ -76,8 +76,7 @@ I encountered a Pydantic validation error when the public endpoint tried to conv
 
 ### Check-in 2 (end of week)
 
-**PR link:**  
-[add PR link after opening the PR]
+**PR link:**  https://github.com/ascherj/pathreview/pull/381
 
 **Branch:**  
 `feat/101-copy-review-link`
